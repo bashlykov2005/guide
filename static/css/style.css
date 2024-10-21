@@ -55,7 +55,7 @@ a {
 }
 
 .dark a:hover {
-    color: #A46526;
+    color: #784919;
 }
 a:hover {
     color: #C78547;
@@ -234,7 +234,7 @@ li>.d-inline-block {
 /* Header */
 .navbar {
     font-family: 'Rubens Modern', arial;
-    font-size: 20px;
+    font-size: 19px;
     color: #f4f1f1;
     text-transform: uppercase;
     background-color: #894c0f;
@@ -242,8 +242,14 @@ li>.d-inline-block {
     min-width: 785px;
     padding: 1px;
 }
+
+.navbar-nav>li {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 .navbar-brand {
-    font-size: 21px;
+    font-size: 20px;
 }
 /* Закрепили navbar */
 .sticky {
