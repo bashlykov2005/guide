@@ -222,16 +222,13 @@
             <div class="col-12">
               <h1 class="text-center text-uppercase color1 text-second"><img class="svg" src="{% static "img/svg/1-2.svg" %}" alt="узор" width="60" height="40">  Маршруты  <img class="svg" src="{% static "img/svg/1-1.svg" %}" alt="узор" width="60" height="40"></h1>
               <ol class="breadcrumb">
-                {% comment %} {% for route in routes %}
-                <h2 class="d-inline-block route-block dark"><img class="svg" src="img/svg/1-3.svg" alt="узор" width="50" height="40"><a href="{% url "route:route_index" %}" class="route-name color1" data-bs-toggle="tooltip" data-bs-placement="top" title="{{route.link}}">{{route.name}}</a></h2>
-                {% endfor %} {% endcomment %}
 
                  {% for route in routes %}
                   {% if route.id in route_dark %}
-                    <h2 class="d-inline-block route-block dark"><img class="svg" src="img/svg/1-3.svg" alt="узор" width="50" height="40"><a href="{% url "route:route_index" %}" class="route-name color1" data-bs-toggle="tooltip" data-bs-placement="top" title="{{route.link}}">{{route.name}}</a></h2>
+                    <h2 class="d-inline-block route-block dark"><img class="svg" src="img/svg/1-3.svg" alt="узор" width="50" height="40"><a href="{% url "route:route_index" route.slug %}" class="route-name color1" data-bs-toggle="tooltip" data-bs-placement="top" title="{{route.link}}">{{route.name}}</a></h2>
                   {% endif %}
                   {% if route.id in route_light %}
-                    <h2 class="d-inline-block route-block light"><img class="svg" src="img/svg/1-3.svg" alt="узор" width="50" height="40"><a href="{% url "route:route_index" %}" class="route-name color1" data-bs-toggle="tooltip" title="{{route.link}}">{{route.name}}</a></h2>
+                    <h2 class="d-inline-block route-block light"><img class="svg" src="img/svg/1-3.svg" alt="узор" width="50" height="40"><a href="{% url "route:route_index" route.slug %}" class="route-name color1" data-bs-toggle="tooltip" title="{{route.link}}">{{route.name}}</a></h2>
                   {% endif %}
                   {% if route.id in route_disabled %}
                     <h2 class="d-inline-block route-block"><span tabindex="0" data-bs-toggle="tooltip" title="{{route.link}}"><img class="svg" src="img/svg/1-3.svg" alt="узор" width="50" height="40"><a href="#" class="route-name color1 disabled">{{route.name}}</a></span></h2>
@@ -242,20 +239,65 @@
           </div>
           <!-- Пагинация -->
           <nav aria-label="Page navigation example">
-            <ul class="pagination pagination-sm justify-content-center mt-4 mb-0">
+            <ul class="pagination pagination-sm justify-content-center mt-5 mb-0">
               <div style="text-shadow: none; border-width: 0; border-radius: 20%; border-color: #894c0f;" class="d-flex">
-                <li class="page-item disabled">
-                  <a style="background: rgb(207, 190, 190); border: 2px solid #C78547;" class="page-link color3" href="#">Предыдущая</a>
-                </li>
-                <li class="page-item active"><a style="background: #C78547; border: 2px solid #C78547;" class="page-link" href="#">1</a></li>
-                <li class="page-item"><a style="border: 2px solid #C78547; background: #FFE5CC; color: #A46526;" onpointerenter="this.setAttribute('style', 'color: #894c0f; background: #d2a276')"
-                  onpointerleave="this.setAttribute('style', 'border: 2px solid #C78547; color: #A46526; background: #FFE5CC')" class="page-link" href="#">2</a></li>
-                <li class="page-item"><a style="border: 2px solid #C78547; background: #FFE5CC; color: #A46526;" onpointerenter="this.setAttribute('style', 'color: #894c0f; background: #d2a276')"
-                  onpointerleave="this.setAttribute('style', 'border: 2px solid #C78547; color: #A46526; background: #FFE5CC')" class="page-link" href="#">3</a></li>
-                <li class="page-item ">
-                  <a style="border: 2px solid #C78547; background: #f0c396; color: #A46526;" onpointerenter="this.setAttribute('style', 'color: #894c0f; background: #d2a276')"
-                  onpointerleave="this.setAttribute('style', 'border: 2px solid #C78547; color: #A46526; background: #f0c396')" class="page-link" href="#">Следующая</a>
-                </li>
+                {% if not routes.has_previous %}
+                  <li class="page-item disabled">
+                      <a style="background: rgb(207, 190, 190); border: 2px solid #C78547;" class="page-link color3"
+                      href="{% if routes.has_previous %}
+                      {% url "main:index" routes.previous_page_number %}#route
+                      {% else %}
+                      #
+                      {% endif %}">Предыдущая</a>
+                  </li>
+                {% else %}
+                  <li class="page-item">
+                    <a style="border: 2px solid #C78547; background: #f0c396; color: #A46526;" onpointerenter="this.setAttribute('style', 'color: #894c0f; background: #d2a276')"
+                    onpointerleave="this.setAttribute('style', 'border: 2px solid #C78547; color: #A46526; background: #f0c396')" class="page-link"
+                    href="{% if routes.has_previous %}
+                      {% url "main:index" routes.previous_page_number %}#route
+                      {% else %}
+                      #
+                      {% endif %}">Предыдущая</a>
+                  </li>
+                {% endif %}
+
+                {% for page in routes.paginator.page_range %}
+                  {% if page >= routes.number|add:-2 and page <= routes.number|add:2 %}
+                    {% if routes.number == page %}
+                      <li class="page-item active"><a style="background: #C78547; border: 2px solid #C78547;" class="page-link"
+                        href="{% url "main:index" page %}#route">{{ page }}</a>
+                      </li>
+                    {% else %}
+                      <li class="page-item"><a style="border: 2px solid #C78547; background: #FFE5CC; color: #A46526;" onpointerenter="this.setAttribute('style', 'color: #894c0f; background: #d2a276')"
+                        onpointerleave="this.setAttribute('style', 'border: 2px solid #C78547; color: #A46526; background: #FFE5CC')" class="page-link"
+                        href="{% url "main:index" page %}#route">{{ page }}</a>
+                      </li>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+
+                {% if not routes.has_next %}
+                  <li class="page-item disabled">
+                      <a style="background: rgb(207, 190, 190); border: 2px solid #C78547;" class="page-link color3"
+                      href="{% if routes.has_next %}
+                      {% url "main:index" routes.next_page_number %}#route
+                      {% else %}
+                      #
+                      {% endif %}">Следующая</a>
+                  </li>
+                {% else %}
+                  <li class="page-item">
+                    <a style="border: 2px solid #C78547; background: #f0c396; color: #A46526;" onpointerenter="this.setAttribute('style', 'color: #894c0f; background: #d2a276')"
+                    onpointerleave="this.setAttribute('style', 'border: 2px solid #C78547; color: #A46526; background: #f0c396')" class="page-link"
+                    href="{% if routes.has_next %}
+                      {% url "main:index" routes.next_page_number %}#route
+                      {% else %}
+                      #
+                      {% endif %}">Следующая</a>
+                  </li>
+                {% endif %}
+
               </div>
             </ul>
           </nav>

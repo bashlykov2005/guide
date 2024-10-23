@@ -29,7 +29,7 @@
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="{% url "main:index" %}">Главная</a></li>
                   <li class="breadcrumb-item"><a href="{% url "main:index" %}#route">Маршруты</a></li>
-                  <li class="breadcrumb-item"><a href="{% url "route:route_index" %}">Маршрут</a></li>
+                  <li class="breadcrumb-item"><a href="{% url "route:route_index" route.slug %}">Маршрут</a></li>
                   <li class="breadcrumb-item active" aria-current="page">Описание маршрута</li>
                 </ol>
               </nav>
@@ -43,12 +43,11 @@
                       </button>
                     </h2>
                     <div id="flush-collapseOne" class="accordion-collapse text-center collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                      <div class="accordion-body"><p class="col-12">{{route.route_desc}}</p></div>
+                      <div class="accordion-body"><p class="col-12">{{route.route_desc | safe }}</p></div>
                     </div>
                   </div>
                 </div>
               </div>
-              {% comment %} {% endfor %} {% endcomment %}
             </div>
           </div>
         </div>

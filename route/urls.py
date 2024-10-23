@@ -5,7 +5,7 @@ from route import views
 app_name = "route"
 
 urlpatterns = [
-    path("", views.route_index, name="route_index"),
-    path("route_descr/", views.route_descr, name="route_descr"),
-    path("route_city/", views.route_city, name="route_city"),
+    path("<slug:route_slug>/", views.route_index, name="route_index"),
+    path("<slug:route_slug>/route_descr/", views.route_descr, name="route_descr"),
+    path("<slug:route_slug>/route_city/", views.route_city, name="route_city"),
 ]

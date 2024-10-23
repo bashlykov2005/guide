@@ -12,7 +12,7 @@ class Route(models.Model):
         db_table = "routes"
         verbose_name = "Маршруты"
         verbose_name_plural = "Маршруты"
-        ordering = ["id"]
+        ordering = ("id",)
 
     name = models.CharField(
         verbose_name="Название маршрута",
@@ -69,3 +69,6 @@ class Route(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+    def get_absolute_url(self):
+        return reverse("route", kwargs={"route_slug": self.slug})

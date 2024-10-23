@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import context
@@ -7,25 +8,29 @@ from country.models import Сountry
 from brewery.models import Brewery
 
 
-def index(request):
+def index(request, page=1):
 
     routes = Route.objects.all()
+
     route_dark = range(1, 5)
-    route_light = range(5, 50)
-    route_disabled = range(50, 100)
+    route_light = range(5, 54)
+    route_disabled = range(54, 100)
+
+    paginator = Paginator(routes, 20)
+    current_page = paginator.page(page)
 
     context = {
         "title": "Главная",
-        "routes": routes,
+        "routes": current_page,
         "route_dark": route_dark,
         "route_light": route_light,
         "route_disabled": route_disabled,
     }
-    return render(request, "main/index.html", context)
+    return render(request, "main/index.html", context=context)
 
 
 def about(request):
     context = {
         "title": "Информация",
     }
-    return render(request, "main/about.html", context)
+    return render(request, "main/about.html", context=context)
