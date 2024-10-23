@@ -244,8 +244,7 @@
                 {% if not routes.has_previous %}
                   <li class="page-item disabled">
                       <a style="background: rgb(207, 190, 190); border: 2px solid #C78547;" class="page-link color3"
-                      href="{% if routes.has_previous %}
-                      {% url "main:index" routes.previous_page_number %}#route
+                      href="{% if routes.has_previous %}?page={{ routes.previous_page_number }}#route
                       {% else %}
                       #
                       {% endif %}">Предыдущая</a>
@@ -254,8 +253,7 @@
                   <li class="page-item">
                     <a style="border: 2px solid #C78547; background: #f0c396; color: #A46526;" onpointerenter="this.setAttribute('style', 'color: #894c0f; background: #d2a276')"
                     onpointerleave="this.setAttribute('style', 'border: 2px solid #C78547; color: #A46526; background: #f0c396')" class="page-link"
-                    href="{% if routes.has_previous %}
-                      {% url "main:index" routes.previous_page_number %}#route
+                    href="{% if routes.has_previous %}?page={{ routes.previous_page_number }}#route
                       {% else %}
                       #
                       {% endif %}">Предыдущая</a>
@@ -266,12 +264,12 @@
                   {% if page >= routes.number|add:-2 and page <= routes.number|add:2 %}
                     {% if routes.number == page %}
                       <li class="page-item active"><a style="background: #C78547; border: 2px solid #C78547;" class="page-link"
-                        href="{% url "main:index" page %}#route">{{ page }}</a>
+                        href="?page={{ page }}#route">{{ page }}</a>
                       </li>
                     {% else %}
                       <li class="page-item"><a style="border: 2px solid #C78547; background: #FFE5CC; color: #A46526;" onpointerenter="this.setAttribute('style', 'color: #894c0f; background: #d2a276')"
                         onpointerleave="this.setAttribute('style', 'border: 2px solid #C78547; color: #A46526; background: #FFE5CC')" class="page-link"
-                        href="{% url "main:index" page %}#route">{{ page }}</a>
+                        href="?page={{ page }}#route">{{ page }}</a>
                       </li>
                     {% endif %}
                   {% endif %}
@@ -280,8 +278,7 @@
                 {% if not routes.has_next %}
                   <li class="page-item disabled">
                       <a style="background: rgb(207, 190, 190); border: 2px solid #C78547;" class="page-link color3"
-                      href="{% if routes.has_next %}
-                      {% url "main:index" routes.next_page_number %}#route
+                      href="{% if routes.has_next %}?page={{ routes.next_page_number }}#route
                       {% else %}
                       #
                       {% endif %}">Следующая</a>
@@ -290,8 +287,7 @@
                   <li class="page-item">
                     <a style="border: 2px solid #C78547; background: #f0c396; color: #A46526;" onpointerenter="this.setAttribute('style', 'color: #894c0f; background: #d2a276')"
                     onpointerleave="this.setAttribute('style', 'border: 2px solid #C78547; color: #A46526; background: #f0c396')" class="page-link"
-                    href="{% if routes.has_next %}
-                      {% url "main:index" routes.next_page_number %}#route
+                    href="{% if routes.has_next %}?page={{ routes.next_page_number }}#route
                       {% else %}
                       #
                       {% endif %}">Следующая</a>
